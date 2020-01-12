@@ -13,3 +13,6 @@
 
 * 20191230 - 20200105
 	1. 创建[ES API调用示例脚本库](https://github.com/pppineapple/Elasticsearch-Note/tree/master/RESTfulAPI)
+
+* 20200106 - 20200112
+	1. 创建[结构化查询笔记](https://github.com/pppineapple/Elasticsearch-Note/blob/master/ES%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/%E7%BB%93%E6%9E%84%E5%8C%96%E6%9F%A5%E8%AF%A2.md)
