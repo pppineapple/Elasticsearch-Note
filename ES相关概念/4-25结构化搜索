@@ -1,0 +1,122 @@
+4-25结构化搜索
+DELETE products
+
+POST /products/_bulk
+{ "index": { "_id": 1 }}
+{ "price" : 10,"avaliable":true,"date":"2018-01-01", "productID" : "XHDK-A-1293-#fJ3" }
+{ "index": { "_id": 2 }}
+{ "price" : 20,"avaliable":true,"date":"2019-01-01", "productID" : "KDKE-B-9947-#kL5" }
+{ "index": { "_id": 3 }}
+{ "price" : 30,"avaliable":true, "productID" : "JODL-X-1937-#pV7" }
+{ "index": { "_id": 4 }}
+{ "price" : 30,"avaliable":false, "productID" : "QQPX-R-3956-#aD8" }
+
+GET products
+
+GET products/_search
+{
+  "profile": "true",
+  "explain": true,
+  "query": {
+    "term": {
+      "avaliable": {
+        "value": true
+      }
+    }
+  }
+}
+
+GET products/_search
+{
+  "profile": "true",
+  "explain": true,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "avaliable": true
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+
+GET products/_search
+{
+  "profile": "true",
+  "explain": true, 
+  "query": {
+    "constant_score": {
+      "filter": {
+        "range": {
+          "price": {
+            "gte": 20,
+            "lte": 30
+          }
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+
+GET products/_search
+{
+  "profile": "true",
+  "explain": true,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "now-2y"
+          }
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+
+GET products/_search
+{
+  "profile": "true",
+  "explain": true,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "exists": {
+          "field": "date"
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+
+
+POST /movies/_bulk
+{ "index": { "_id": 1 }}
+{ "title" : "Father of the Bridge Part II","year":1995, "genre":"Comedy"}
+{ "index": { "_id": 2 }}
+{ "title" : "Dave","year":1993,"genre":["Comedy","Romance"] }
+
+GET movies
+
+GET movies/_search
+{
+  "profile": "true",
+  "explain": true, 
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "genre.keyword": "Comedy"
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+

@@ -1,0 +1,25 @@
+4-26相关性算分
+PUT testscore
+{
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "content": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+
+PUT testscore/_bulk
+{ "index": { "_id": 1 }}
+{ "content":"we use Elasticsearch to power the search" }
+{ "index": { "_id": 2 }}
+{ "content":"we like elasticsearch" }
+{ "index": { "_id": 3 }}
+{ "content":"The scoring of documents is caculated by the scoring formula" }
+{ "index": { "_id": 4 }}
+{ "content":"you know, for search" }

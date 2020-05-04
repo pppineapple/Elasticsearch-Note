@@ -1,0 +1,87 @@
+第四章 深入搜索
+24 基于词项和基于全文搜索
+
+post /products/_bulk
+{"index":{"_id":1}}
+{"productID":"XHDK-A-1293-#fJ3", "desc":"iPhone"}
+{"index":{"_id":2}}
+{"productID":"KDKE-B-9947-#kL5", "desc":"iPad"}
+{"index":{"_id":3}}
+{"productID":"J0DL-X-1937-#pV7", "desc":"MBP"}
+
+GET /products
+
+GET /products/_search
+{
+  "query": {
+    "term": {
+      "desc": {
+        "value": "iPhone"
+        //"value": "iphone"
+      }
+    }
+  }
+}
+
+POST /products/_search
+{
+  "query": {
+    "term": {
+      "productID": {
+        //"value": "XHDK-A-1293-#fJ3",
+        //"value": "xhdk-a-1293-#fj3",
+        "value":"xhdk"
+      }
+    }
+  }
+}
+
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": ["XHDK-A-1293-#fJ3"]
+}
+
+GET /products/_search
+{
+  "query": {
+    "term": {
+      "desc.keyword": {
+        "value": "iPhone"
+        //"value": "iphone"
+      }
+    }
+  }
+}
+
+POST /products/_search
+{
+  "query": {
+    "term": {
+      "productID.keyword": {
+        "value": "XHDK-A-1293-#fJ3"
+        //"value": "xhdk-a-1293-#fj3",
+        //"value":"xhdk"
+      }
+    }
+  }
+}
+
+
+POST /products/_search
+{
+  "explain":true,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "productID.keyword": "XHDK-A-1293-#fJ3"
+        }
+      }
+    }
+  }
+}
+
+
+
+

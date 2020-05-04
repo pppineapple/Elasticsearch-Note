@@ -1,0 +1,89 @@
+4-27QueryContext&FilterContext
+DELETE blogs
+POST /blogs/_bulk
+{ "index": { "_id": 1 }}
+{"title":"Apple iPad", "content":"Apple iPad,Apple iPad" }
+{ "index": { "_id": 2 }}
+{"title":"Apple iPad,Apple iPad", "content":"Apple iPad" }
+
+
+GET blogs/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {"match": {
+          "title": {
+            "query": "apple,ipad",
+            "boost": 1.1
+          }
+        }},
+        {"match": {
+          "content": {
+            "query": "apple,ipad",
+            "boost": 2
+          }
+        }}
+      ]
+    }
+  }
+}
+
+DELETE news
+POST /news/_bulk
+{ "index": { "_id": 1 }}
+{ "content":"Apple Mac" }
+{ "index": { "_id": 2 }}
+{ "content":"Apple iPad" }
+{ "index": { "_id": 3 }}
+{ "content":"Apple employee like Apple Pie and Apple Juice" }
+
+GET news/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match": {
+          "content": "apple"
+        }}
+      ]
+    }
+  }
+}
+
+GET news/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match": {
+          "content": "apple"
+        }}
+      ],
+      "must_not": [
+        {"match": {
+          "content": "pie"
+        }}
+      ]
+    }
+  }
+}
+
+GET news/_search
+{ "explain": true, 
+  "query": {
+    "boosting": {
+      "positive": {
+        "match": {
+          "content": "apple"
+        }
+      },
+      "negative": {
+        "match": {
+          "content": "pie"
+        }
+      },
+      "negative_boost": 1.2
+    }
+  }
+}
